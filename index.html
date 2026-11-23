@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orderkuy — Menu Kopi & Pastry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ['DM Sans','sans-serif'], serif: ['Playfair Display','serif'] }, colors: { espresso:'#24150F', cream:'#F7F1E7', caramel:'#C9863B', sage:'#73805A' } } } };
+  </script>
+  <style>
+    body { background:#f7f1e7; }
+    .soft-card { box-shadow:0 12px 35px rgba(78,48,31,.09); }
+    .no-scrollbar::-webkit-scrollbar { display:none }
+  </style>
+</head>
+<body class="font-sans text-espresso min-h-screen">
+  <header class="bg-espresso text-white">
+    <nav class="max-w-7xl mx-auto px-5 lg:px-8 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <span class="w-10 h-10 rounded-full bg-caramel flex items-center justify-center font-serif text-xl">O</span>
+        <span class="font-serif text-xl font-bold">Orderkuy</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-white/75">
+        <a href="#menu" class="text-caramel font-semibold">Menu</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#lokasi">Lokasi</a>
+      </div>
+      <button onclick="openCart()" class="relative rounded-full bg-white/10 border border-white/15 px-4 py-2.5 text-sm font-semibold">
+        Pesanan <span id="cartCount" class="ml-2 inline-flex w-6 h-6 items-center justify-center rounded-full bg-caramel">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14 lg:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div class="relative z-10">
+          <p class="uppercase tracking-[0.25em] text-caramel text-xs font-bold mb-4">Coffee & Pastry</p>
+          <h1 class="font-serif text-5xl lg:text-7xl leading-[1.02] font-bold text-espresso">Kopi yang hangat,<br><em class="text-caramel">hari yang tenang.</em></h1>
+          <p class="mt-6 max-w-lg text-espresso/65 leading-7">Temukan racikan kopi, minuman segar, dan pastry favorit untuk menemani setiap cerita di sore hari.</p>
+          <a href="#menu" class="inline-flex mt-8 rounded-full bg-espresso text-white px-6 py-3.5 text-sm font-bold">Lihat Semua Menu <span class="ml-3">→</span></a>
+        </div>
+        <div class="relative h-[360px] lg:h-[520px]">
+          <div class="absolute inset-5 rounded-[2.5rem] bg-caramel/20 rotate-3"></div>
+          <div class="absolute inset-0 overflow-hidden rounded-[2.5rem] bg-[#d6b68e]">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=85" class="w-full h-full object-cover" alt="Secangkir kopi di atas meja" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+        <div>
+          <p class="text-caramel text-xs font-bold uppercase tracking-[0.22em] mb-2">Pilihan Kami</p>
+          <h2 class="font-serif text-4xl font-bold">Menu Favorit</h2>
+        </div>
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar" id="tabs"></div>
+      </div>
+      <div id="menuGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+    </section>
+
+    <section id="tentang" class="bg-espresso text-cream py-16 mt-8">
+      <div class="max-w-7xl mx-auto px-5 lg:px-8 grid md:grid-cols-3 gap-10">
+        <div><p class="text-caramel text-xs uppercase tracking-[0.2em] font-bold">Orderkuy</p><h3 class="font-serif text-3xl mt-3">Dibuat dengan rasa.</h3></div>
+        <p class="text-white/65 leading-7">Bahan pilihan, racikan konsisten, dan pelayanan hangat. Semua disiapkan untuk memberikan pengalaman singgah yang nyaman.</p>
+        <div class="md:text-right"><p class="text-white/50 text-sm">Buka setiap hari</p><p class="text-2xl font-serif mt-2">08.00 — 22.00</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="backdrop" onclick="closeCart()" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+  <aside id="drawer" class="fixed right-0 top-0 h-full w-full max-w-md bg-cream z-50 translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-5 border-b border-espresso/10 flex justify-between items-center"><h2 class="font-serif text-2xl font-bold">Pesanan Anda</h2><button onclick="closeCart()" class="text-2xl">×</button></div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+    <div class="p-5 border-t border-espresso/10 bg-white"><div class="flex justify-between font-bold mb-4"><span>Total</span><span id="cartTotal">Rp 0</span></div><button onclick="checkout()" class="w-full rounded-full bg-espresso text-white py-3.5 font-bold">Pesan via WhatsApp</button></div>
+  </aside>
+
+  <script>
+    const menu = [
+      {id:1,name:'Korean Banana Latte',cat:'Coffee',price:17000,img:'https://kopikenangan.menu-kopi.id/img/korean-banana-latte.png'},
+      {id:2,name:'Creamy Caramel Latte',cat:'Coffee',price:19000,img:'https://kopikenangan.menu-kopi.id/img/creamy-caramel-latte.png'},
+      {id:3,name:'Matcha Espresso',cat:'Coffee',price:20000,img:'https://kopikenangan.menu-kopi.id/img/matcha-espresso.png'},
+      {id:4,name:'Matcha Latte',cat:'Non Coffee',price:18000,img:'https://kopikenangan.menu-kopi.id/img/matcha-latte.png'},
+      {id:5,name:'Avocado Milk',cat:'Non Coffee',price:18000,img:'https://kopikenangan.menu-kopi.id/img/avocado-milk.png'},
+      {id:6,name:'Matcha Kenangan Frappe',cat:'Frappe',price:23000,img:'https://kopikenangan.menu-kopi.id/img/matcha-kenangan-frappe.png'},
+      {id:7,name:'Butter Croissant',cat:'Pastry',price:14000,img:'https://kopikenangan.menu-kopi.id/img/butter-croissant.png'},
+      {id:8,name:'Chocolate Croissant',cat:'Pastry',price:15000,img:'https://kopikenangan.menu-kopi.id/img/chocolate-croissant.png'}
+    ];
+    let active='Semua', cart={};
+    const rupiah=n=>'Rp '+n.toLocaleString('id-ID');
+
+    function renderTabs(){
+      ['Semua','Coffee','Non Coffee','Frappe','Pastry'].forEach(cat=>{
+        const b=document.createElement('button'); b.textContent=cat;
+        b.className=`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold ${active===cat?'bg-espresso text-white':'bg-white border border-espresso/10'}`;
+        b.onclick=()=>{active=cat;renderTabs();renderMenu()}; document.getElementById('tabs').appendChild(b);
+      });
+      document.getElementById('tabs').replaceChildren(...[...document.querySelectorAll('#tabs button')]);
+    }
+
+    function renderMenu(){
+      const tabs=document.getElementById('tabs'); tabs.innerHTML='';
+      ['Semua','Coffee','Non Coffee','Frappe','Pastry'].forEach(cat=>{ const b=document.createElement('button'); b.textContent=cat; b.className=`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold ${active===cat?'bg-espresso text-white':'bg-white border border-espresso/10'}`; b.onclick=()=>{active=cat;renderMenu()}; tabs.appendChild(b); });
+      const items=menu.filter(i=>active==='Semua'||i.cat===active);
+      document.getElementById('menuGrid').innerHTML=items.map(i=>`<article class="soft-card bg-white rounded-[1.5rem] overflow-hidden"><div class="h-56 bg-[#EFE5D5] flex items-center justify-center p-5"><img src="${i.img}" alt="${i.name}" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/400x400/F1E5D3/24150F?text=${encodeURIComponent(i.name)}'"></div><div class="p-5"><p class="text-[11px] uppercase tracking-[0.16em] text-caramel font-bold">${i.cat}</p><h3 class="font-serif text-lg font-bold mt-1 min-h-12">${i.name}</h3><div class="mt-4 flex items-center justify-between"><span class="font-bold">${rupiah(i.price)}</span><button onclick="add(${i.id})" class="w-9 h-9 rounded-full bg-espresso text-white text-xl flex items-center justify-center">+</button></div></div></article>`).join('');
+    }
+
+    function add(id){cart[id]=(cart[id]||0)+1;updateCart()}
+    function updateCart(){let q=0,t=0,html=''; menu.forEach(i=>{if(cart[i.id]){q+=cart[i.id];t+=i.price*cart[i.id];html+=`<div class="bg-white rounded-2xl p-3 flex items-center gap-3"><img src="${i.img}" class="w-14 h-14 object-contain bg-cream rounded-xl"><div class="flex-1"><p class="font-bold text-sm">${i.name}</p><p class="text-xs text-caramel">${rupiah(i.price)} × ${cart[i.id]}</p></div><button onclick="removeItem(${i.id})" class="w-8 h-8 rounded-full bg-espresso text-white">−</button></div>`}}); document.getElementById('cartCount').textContent=q; document.getElementById('cartTotal').textContent=rupiah(t); document.getElementById('cartItems').innerHTML=html||'<p class="text-center text-espresso/50 mt-20">Pesanan masih kosong</p>'}
+    function removeItem(id){cart[id]--;if(cart[id]<=0)delete cart[id];updateCart()}
+    function openCart(){document.getElementById('backdrop').classList.remove('hidden');document.getElementById('drawer').classList.remove('translate-x-full')}
+    function closeCart(){document.getElementById('backdrop').classList.add('hidden');document.getElementById('drawer').classList.add('translate-x-full')}
+    function checkout(){if(!Object.keys(cart).length){alert('Keranjang masih kosong');return}let text='*Pesanan Orderkuy*\n\n',total=0;menu.forEach(i=>{if(cart[i.id]){text+=`${i.name} (${cart[i.id]}x) - ${rupiah(i.price*cart[i.id])}\n`;total+=i.price*cart[i.id]}});text+=`\n*Total: ${rupiah(total)}*`;window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank')}
+    renderMenu(); updateCart();
+  </script>
+</body>
+</html>
